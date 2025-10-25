@@ -207,3 +207,20 @@ try:
     from .local_settings import *
 except ImportError:
     pass
+
+# =============================================================================
+# EMERGENCY FIX - FORCE CUSTOM DOMAIN
+# =============================================================================
+
+# FORCE allowed hosts for production
+ALLOWED_HOSTS = [
+    'agreeddating.com',
+    'www.agreeddating.com', 
+    '.railway.app',
+    '127.0.0.1', 
+    'localhost'
+]
+
+# FORCE production settings
+DEBUG = False
+SECURE_SSL_REDIRECT = True
