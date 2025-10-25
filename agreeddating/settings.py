@@ -25,7 +25,7 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 SECRET_KEY = 'django-insecure-your-secret-key-here'
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = False  # CHANGED: Force False for production
+DEBUG = True
 
 ALLOWED_HOSTS = []
 
@@ -144,15 +144,15 @@ DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 # Use environment variable for secret key in production
 SECRET_KEY = os.environ.get('SECRET_KEY', SECRET_KEY)
 
-# Debug mode from environment variable - FIXED: Force False for production
-DEBUG = False  # CHANGED: Force production mode
+# Debug mode from environment variable
+DEBUG = os.environ.get('DEBUG', 'False').lower() == 'true'
 
-# Allowed hosts for production - CRITICAL FIX: Added custom domain
+# Allowed hosts for production
 production_hosts = [
-    'agreeddating.com',           # Your custom domain
-    'www.agreeddating.com',       # WWW subdomain
-    '.railway.app',               # Railway deployment domains
-    '.onrender.com'               # Render deployment domains
+    'agreeddating.com',
+    'www.agreeddating.com', 
+    '.railway.app',
+    '.onrender.com'
 ]
 ALLOWED_HOSTS = os.environ.get('ALLOWED_HOSTS', '').split(',') if os.environ.get('ALLOWED_HOSTS') else production_hosts
 
@@ -197,6 +197,46 @@ else:
     SECURE_HSTS_SECONDS = 0
     # Development hosts
     ALLOWED_HOSTS = ['127.0.0.1', 'localhost', '0.0.0.0']
+
+# =============================================================================
+# DEBUG ENVIRONMENT
+# =============================================================================
+
+print("🔍 ENVIRONMENT DEBUG INFO:")
+print(f"DEBUG = {DEBUG}")
+print(f"ALLOWED_HOSTS = {ALLOWED_HOSTS}")
+print(f"RAILWAY_STATIC_URL = {os.environ.get('RAILWAY_STATIC_URL', 'NOT SET')}")
+print(f"RAILWAY_ENVIRONMENT = {os.environ.get('RAILWAY_ENVIRONMENT', 'NOT SET')}")
+print(f"DATABASE_URL = {'SET' if 'DATABASE_URL' in os.environ else 'NOT SET'}")
+
+# =============================================================================
+# RAILWAY PRODUCTION OVERRIDE - FORCE SETTINGS
+# =============================================================================
+
+# FORCE production settings regardless of environment
+print("🚨 APPLYING FORCED PRODUCTION SETTINGS")
+
+# Force ALLOWED_HOSTS - this is critical!
+ALLOWED_HOSTS = [
+    'agreeddating.com',
+    'www.agreeddating.com', 
+    '.railway.app',
+    '.onrender.com',
+    '127.0.0.1', 
+    'localhost',
+    '0.0.0.0'
+]
+
+# Force production mode
+DEBUG = False
+
+# Force security settings
+SECURE_SSL_REDIRECT = True
+SESSION_COOKIE_SECURE = True
+CSRF_COOKIE_SECURE = True
+SECURE_HSTS_SECONDS = 31536000
+
+print(f"✅ FORCED SETTINGS APPLIED: ALLOWED_HOSTS = {ALLOWED_HOSTS}")
 
 # =============================================================================
 # LOCAL DEVELOPMENT OVERRIDES
