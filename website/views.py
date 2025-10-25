@@ -1,12 +1,35 @@
-from django.shortcuts import render
+from django.shortcuts import render, redirect
+from django.contrib import messages
 
 def index(request):
     return render(request, 'website/index.html')
 
 def login_page(request):
+    if request.method == 'POST':
+        # Process login form
+        email = request.POST.get('email')
+        password = request.POST.get('password')
+        
+        # For now, just redirect to dashboard
+        # In a real app, you would authenticate the user here
+        messages.success(request, 'Successfully signed in!')
+        return redirect('dashboard')
+    
     return render(request, 'website/loginpage.html')
 
 def join(request):
+    if request.method == 'POST':
+        # Process registration form
+        full_name = request.POST.get('full_name')
+        email = request.POST.get('email')
+        password = request.POST.get('password')
+        location = request.POST.get('location')
+        
+        # For now, just redirect to create profile
+        # In a real app, you would create a user account here
+        messages.success(request, 'Account created successfully! Please complete your profile.')
+        return redirect('create_profile_step1')
+    
     return render(request, 'website/join.html')
 
 def help_center(request):
@@ -44,3 +67,41 @@ def events(request):
 
 def faq(request):
     return render(request, 'website/faq.html')
+
+# Add these missing views that are referenced in your templates
+def dashboard(request):
+    return render(request, 'website/dashboard.html')
+
+def create_profile_step1(request):
+    messages.success(request, 'Profile creation started! Complete your profile to get matches.')
+    return render(request, 'website/createprofile1.html')
+
+def create_profile_step2(request):
+    if request.method == 'POST':
+        # Process step 1 data and move to step 2
+        messages.success(request, 'Basic info saved! Now tell us more about yourself.')
+        return render(request, 'website/createprofile2.html')
+    return redirect('create_profile_step1')
+
+def create_profile_step3(request):
+    if request.method == 'POST':
+        # Process step 2 data and move to step 3
+        messages.success(request, 'Personal details saved! Almost done.')
+        return render(request, 'website/createprofile3.html')
+    return redirect('create_profile_step1')
+
+def create_profile_step4(request):
+    if request.method == 'POST':
+        # Process step 3 data and move to step 4
+        messages.success(request, 'Preferences saved! Final step.')
+        return render(request, 'website/createprofile4.html')
+    return redirect('create_profile_step1')
+
+def create_profile(request):
+    # Main profile creation entry point
+    return redirect('create_profile_step1')
+
+def profile_detail(request, username):
+    # Profile detail view - for now just show a basic page
+    context = {'username': username}
+    return render(request, 'website/profile_detail.html', context)
