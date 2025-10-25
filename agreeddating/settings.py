@@ -147,8 +147,14 @@ SECRET_KEY = os.environ.get('SECRET_KEY', SECRET_KEY)
 # Debug mode from environment variable - FIXED: Better environment detection
 DEBUG = os.environ.get('DEBUG', 'False').lower() == 'true'
 
-# Allowed hosts for production
-ALLOWED_HOSTS = os.environ.get('ALLOWED_HOSTS', '').split(',') if os.environ.get('ALLOWED_HOSTS') else ['127.0.0.1', 'localhost']
+# Allowed hosts for production - CRITICAL FIX: Added custom domain
+production_hosts = [
+    'agreeddating.com',           # Your custom domain
+    'www.agreeddating.com',       # WWW subdomain
+    '.railway.app',               # Railway deployment domains
+    '.onrender.com'               # Render deployment domains
+]
+ALLOWED_HOSTS = os.environ.get('ALLOWED_HOSTS', '').split(',') if os.environ.get('ALLOWED_HOSTS') else production_hosts
 
 # Database configuration for Railway - overrides SQLite in production
 if 'DATABASE_URL' in os.environ:
@@ -176,12 +182,21 @@ if IS_PRODUCTION:
     
     # Additional security settings
     SECURE_PROXY_SSL_HEADER = ('HTTP_X_FORWARDED_PROTO', 'https')
+    
+    # Development hosts for local testing
+    DEVELOPMENT_HOSTS = ['127.0.0.1', 'localhost', '0.0.0.0']
+    # Add development hosts if not already present
+    for host in DEVELOPMENT_HOSTS:
+        if host not in ALLOWED_HOSTS:
+            ALLOWED_HOSTS.append(host)
 else:
     # Development settings - allow HTTP
     SECURE_SSL_REDIRECT = False
     SESSION_COOKIE_SECURE = False
     CSRF_COOKIE_SECURE = False
     SECURE_HSTS_SECONDS = 0
+    # Development hosts
+    ALLOWED_HOSTS = ['127.0.0.1', 'localhost', '0.0.0.0']
 
 # =============================================================================
 # LOCAL DEVELOPMENT OVERRIDES
