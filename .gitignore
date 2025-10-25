@@ -35,3 +35,11 @@ Thumbs.db
 
 # Logs
 *.log
+logs/
+
+# Coverage
+.coverage
+htmlcov/
+
+# Production
+/staticfiles/

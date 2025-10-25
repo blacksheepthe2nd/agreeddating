@@ -144,11 +144,11 @@ DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 # Use environment variable for secret key in production
 SECRET_KEY = os.environ.get('SECRET_KEY', SECRET_KEY)
 
-# Debug mode from environment variable
-DEBUG = os.environ.get('DEBUG', 'False').lower() == 'true'
+# Debug mode from environment variable - default to True for development
+DEBUG = os.environ.get('DEBUG', 'True').lower() == 'true'
 
 # Allowed hosts for production
-ALLOWED_HOSTS = os.environ.get('ALLOWED_HOSTS', '*').split(',')
+ALLOWED_HOSTS = os.environ.get('ALLOWED_HOSTS', 'localhost,127.0.0.1').split(',')
 
 # Database configuration for Railway - overrides SQLite in production
 if 'DATABASE_URL' in os.environ:
@@ -158,9 +158,9 @@ if 'DATABASE_URL' in os.environ:
         ssl_require=True
     )
 
-# Security settings for production
+# Security settings - different for development vs production
 if not DEBUG:
-    # SSL/HTTPS settings
+    # PRODUCTION: SSL/HTTPS settings
     SECURE_SSL_REDIRECT = True
     SESSION_COOKIE_SECURE = True
     CSRF_COOKIE_SECURE = True
@@ -169,6 +169,10 @@ if not DEBUG:
     SECURE_HSTS_SECONDS = 31536000  # 1 year
     SECURE_HSTS_INCLUDE_SUBDOMAINS = True
     SECURE_HSTS_PRELOAD = True
-    
-    # Additional security settings
     SECURE_PROXY_SSL_HEADER = ('HTTP_X_FORWARDED_PROTO', 'https')
+else:
+    # DEVELOPMENT: HTTP settings
+    SECURE_SSL_REDIRECT = False
+    SESSION_COOKIE_SECURE = False
+    CSRF_COOKIE_SECURE = False
+    SECURE_PROXY_SSL_SSL_HEADER = None

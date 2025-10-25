@@ -1,3 +1,4 @@
+{% load static %}
 <!doctype html>
 <html lang="en">
 <head>
@@ -510,7 +511,7 @@
 
   <header class="premium-header">
     <div class="nav-container">
-      <a href="/" class="logo-premium" aria-label="AgreedDating Homepage">
+      <a href="{% url 'index' %}" class="logo-premium" aria-label="AgreedDating Homepage">
         <div class="logo-icon">AD</div>
         AgreedDating
       </a>
@@ -522,30 +523,30 @@
       </button>
 
       <nav class="nav-links">
-        <a href="/discover" class="nav-link">Discover</a>
-        <a href="/premium" class="nav-link">Premium</a>
-        <a href="/success-stories" class="nav-link">Success Stories</a>
-        <a href="/events" class="nav-link">Exclusive Events</a>
-        <a href="/about" class="nav-link">About</a>
+        <a href="{% url 'discover' %}" class="nav-link">Discover</a>
+        <a href="{% url 'premium' %}" class="nav-link">Premium</a>
+        <a href="{% url 'success_stories' %}" class="nav-link">Success Stories</a>
+        <a href="{% url 'events' %}" class="nav-link">Exclusive Events</a>
+        <a href="{% url 'about' %}" class="nav-link">About</a>
       </nav>
       
       <div class="auth-buttons">
-        <a href="/login" class="btn btn-login">Sign In</a>
-        <a href="/join" class="btn btn-join">Join Elite</a>
+        <a href="{% url 'login' %}" class="btn btn-login">Sign In</a>
+        <a href="{% url 'join' %}" class="btn btn-join">Join Elite</a>
       </div>
     </div>
 
     <div class="mobile-cta-container">
-      <a href="/login" class="btn btn-login">Sign In</a>
-      <a href="/join" class="btn btn-join">Join Elite</a>
+      <a href="{% url 'login' %}" class="btn btn-login">Sign In</a>
+      <a href="{% url 'join' %}" class="btn btn-join">Join Elite</a>
     </div>
 
     <nav class="mobile-nav-links">
-      <a href="/discover" class="nav-link" style="--delay: 0.1s;">Discover</a>
-      <a href="/premium" class="nav-link" style="--delay: 0.2s;">Premium</a>
-      <a href="/success-stories" class="nav-link" style="--delay: 0.3s;">Success Stories</a>
-      <a href="/events" class="nav-link" style="--delay: 0.4s;">Exclusive Events</a>
-      <a href="/about" class="nav-link" style="--delay: 0.5s;">About</a>
+      <a href="{% url 'discover' %}" class="nav-link" style="--delay: 0.1s;">Discover</a>
+      <a href="{% url 'premium' %}" class="nav-link" style="--delay: 0.2s;">Premium</a>
+      <a href="{% url 'success_stories' %}" class="nav-link" style="--delay: 0.3s;">Success Stories</a>
+      <a href="{% url 'events' %}" class="nav-link" style="--delay: 0.4s;">Exclusive Events</a>
+      <a href="{% url 'about' %}" class="nav-link" style="--delay: 0.5s;">About</a>
     </nav>
   </header>
 
@@ -554,7 +555,8 @@
         <div class="join-card">
             <h2 class="section-title">Begin Your <span class="gold-accent">Application</span></h2>
             <p>Your journey to an elite connection starts here. Absolute discretion is guaranteed.</p>
-            <form action="/apply" method="POST">
+            <form action="{% url 'join' %}" method="POST">
+                {% csrf_token %}
                 <input type="text" placeholder="Full Name" required />
                 <input type="email" placeholder="Email Address" required />
                 <input type="password" placeholder="Create Password" required />
@@ -570,7 +572,7 @@
                 <button type="submit" class="btn btn-join" style="width: 100%; padding: 16px 0;">Submit Application</button>
             </form>
             <p style="color: var(--text-muted); font-size: 0.95rem; margin-top: 1.5rem;">
-                Already have an account? <a href="/login" class="nav-link" style="color: var(--brand-nav-link); display: inline;">Sign In</a>
+                Already have an account? <a href="{% url 'login' %}" class="nav-link" style="color: var(--brand-nav-link); display: inline;">Sign In</a>
             </p>
         </div>
     </section>
@@ -591,22 +593,22 @@
       <div class="footer-links">
         <div class="footer-column">
           <div class="footer-column-title">Company</div>
-          <a href="/about" class="footer-link">About Us</a>
-          <a href="/contact" class="footer-link">Contact</a>
+          <a href="{% url 'about' %}" class="footer-link">About Us</a>
+          <a href="{% url 'contact' %}" class="footer-link">Contact</a>
         </div>
         
         <div class="footer-column">
           <div class="footer-column-title">Legal</div>
-          <a href="/privacy" class="footer-link">Privacy Policy</a>
-          <a href="/terms" class="footer-link">Terms of Service</a>
-          <a href="/safety" class="footer-link">Safety Guidelines</a>
+          <a href="{% url 'privacy' %}" class="footer-link">Privacy Policy</a>
+          <a href="{% url 'terms' %}" class="footer-link">Terms of Service</a>
+          <a href="{% url 'safety' %}" class="footer-link">Safety Guidelines</a>
         </div>
         
         <div class="footer-column">
           <div class="footer-column-title">Support</div>
-          <a href="/help" class="footer-link">Help Center</a>
-          <a href="/trust" class="footer-link">Trust & Safety</a>
-          <a href="/faq" class="footer-link">FAQ</a>
+          <a href="{% url 'help' %}" class="footer-link">Help Center</a>
+          <a href="{% url 'trust' %}" class="footer-link">Trust & Safety</a>
+          <a href="{% url 'faq' %}" class="footer-link">FAQ</a>
         </div>
       </div>
     </div>

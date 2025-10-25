@@ -1,0 +1,913 @@
+{% load static %}
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width,initial-scale=1" />
+<title>AgreedDating — Elite Dating Experience</title>
+<meta name="description" content="Where sophisticated connections meet meaningful relationships. Premium dating for discerning singles." />
+
+<style>
+  :root {
+    /* Premium gold color palette */
+    --brand: #cdad7c;
+    --brand-dark: #a88a5a;
+    --brand-light: #e8d8b8;
+    --brand-glow: rgba(205, 173, 119, 0.3);
+    
+    /* Sophisticated backgrounds */
+    --bg-dark: #0a0a0a;
+    --bg-deep: #121212;
+    --bg-charcoal: #1a1a1a;
+    --bg-gradient: linear-gradient(135deg, #0a0a0a 0%, #1a1a1a 50%, #2a2a2a 100%);
+    
+    --card: rgba(255, 255, 255, 0.03);
+    --card-hover: rgba(255, 255, 255, 0.06);
+    --text: #ffffff;
+    --text-muted: #a0a0a0;
+    --text-gold: #cdad7c;
+    --border: rgba(205, 173, 119, 0.3);
+    --radius: 20px;
+    --shadow: 0 25px 50px rgba(0, 0, 0, 0.5);
+    --glow: 0 0 60px rgba(205, 173, 119, 0.2);
+    --brand-nav-link: #cdad7f;
+  }
+
+  * { 
+    box-sizing: border-box; 
+    margin: 0; 
+    padding: 0; 
+  }
+  
+  body {
+    background: var(--bg-gradient);
+    color: var(--text);
+    font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+    line-height: 1.7;
+    min-height: 100vh;
+    overflow-x: hidden;
+  }
+  
+  /* Success Messages */
+  .messages-container {
+    position: fixed;
+    top: 90px;
+    left: 50%;
+    transform: translateX(-50%);
+    z-index: 10000;
+    width: 90%;
+    max-width: 500px;
+  }
+
+  .alert {
+    background: linear-gradient(135deg, var(--brand), var(--brand-dark));
+    color: #000;
+    padding: 1rem 1.5rem;
+    border-radius: var(--radius);
+    margin-bottom: 1rem;
+    box-shadow: var(--shadow), var(--glow);
+    border: 1px solid var(--brand-light);
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    font-weight: 600;
+    animation: slideDown 0.3s ease-out;
+  }
+
+  .close-alert {
+    background: none;
+    border: none;
+    color: #000;
+    font-size: 1.5rem;
+    cursor: pointer;
+    margin-left: auto;
+    padding: 0;
+    width: 30px;
+    height: 30px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: opacity 0.3s ease;
+  }
+
+  .close-alert:hover {
+    opacity: 0.7;
+  }
+
+  @keyframes slideDown {
+    from {
+        transform: translateY(-100%);
+        opacity: 0;
+    }
+    to {
+        transform: translateY(0);
+        opacity: 1;
+    }
+  }
+
+  @keyframes slideUp {
+    from {
+        transform: translateY(0);
+        opacity: 1;
+    }
+    to {
+        transform: translateY(-100%);
+        opacity: 0;
+    }
+  }
+  
+  /* Premium Header - Mobile Optimized */
+  .premium-header {
+    position: fixed;
+    top: 0;
+    width: 100%;
+    background: rgba(10, 10, 10, 0.95);
+    backdrop-filter: blur(20px);
+    border-bottom: 1px solid var(--border);
+    z-index: 1000;
+    padding: 1rem 0;
+  }
+
+  .nav-container {
+    max-width: 1400px;
+    margin: 0 auto;
+    padding: 0 1.5rem;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+  }
+
+  .logo-premium {
+    display: flex;
+    align-items: center;
+    text-decoration: none;
+  }
+
+  .logo-img {
+    height: 45px;
+    width: auto;
+    max-width: 180px;
+    object-fit: contain;
+  }
+  
+  /* Mobile Navigation Toggle */
+  .mobile-nav-toggle {
+    display: none;
+    flex-direction: column;
+    justify-content: space-between;
+    width: 30px;
+    height: 25px;
+    background: transparent;
+    border: none;
+    cursor: pointer;
+  }
+
+  .mobile-nav-toggle .line {
+    width: 100%;
+    height: 3px;
+    background: var(--text-gold);
+    transition: all 0.3s ease;
+    transform-origin: center;
+  }
+
+  /* Desktop Navigation */
+  .nav-links {
+    display: flex;
+    gap: 2rem;
+    align-items: center;
+  }
+
+  .nav-link {
+    color: var(--brand-nav-link);
+    text-decoration: none;
+    font-weight: 500;
+    font-size: 0.95rem;
+    transition: all 0.3s ease;
+    position: relative;
+    padding: 0.5rem 0;
+    white-space: nowrap;
+  }
+
+  .nav-link:hover {
+    color: var(--text);
+  }
+
+  .nav-link.active {
+    color: var(--text-gold);
+    font-weight: 600;
+  }
+
+  .nav-link.active::after {
+    content: '';
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    width: 100%;
+    height: 2px;
+    background: var(--text-gold);
+  }
+
+  /* Mobile Navigation */
+  .mobile-nav {
+    display: none;
+    position: fixed;
+    top: 70px;
+    left: 0;
+    width: 100%;
+    background: rgba(10, 10, 10, 0.98);
+    backdrop-filter: blur(20px);
+    border-bottom: 1px solid var(--border);
+    padding: 1rem 0;
+    z-index: 999;
+  }
+
+  .mobile-nav.open {
+    display: block;
+  }
+
+  .mobile-nav-links {
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+    padding: 0 1.5rem;
+  }
+
+  .mobile-nav-link {
+    color: var(--brand-nav-link);
+    text-decoration: none;
+    font-weight: 500;
+    padding: 1rem 1.5rem;
+    border-radius: 12px;
+    transition: all 0.3s ease;
+    border: 1px solid transparent;
+  }
+
+  .mobile-nav-link:hover,
+  .mobile-nav-link.active {
+    color: var(--text-gold);
+    background: rgba(205, 173, 119, 0.1);
+    border-color: var(--border);
+  }
+
+  /* Main App Layout */
+  .app-container {
+    margin-top: 90px;
+    padding: 1.5rem;
+    max-width: 1400px;
+    margin-left: auto;
+    margin-right: auto;
+  }
+
+  .app-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 2rem;
+    padding-bottom: 1.5rem;
+    border-bottom: 1px solid var(--border);
+  }
+
+  .app-title {
+    font-size: 2rem;
+    font-weight: 300;
+    color: var(--text);
+  }
+
+  .app-title .gold-accent {
+    color: var(--text-gold);
+    font-weight: 600;
+  }
+
+  .action-buttons {
+    display: flex;
+    gap: 1rem;
+  }
+
+  .btn {
+    padding: 10px 20px;
+    border-radius: var(--radius);
+    font-weight: 600;
+    text-decoration: none;
+    transition: all 0.4s ease;
+    border: none;
+    cursor: pointer;
+    font-size: 0.9rem;
+    white-space: nowrap;
+  }
+
+  .btn-primary {
+    background: linear-gradient(135deg, var(--brand), var(--brand-dark));
+    color: #000;
+    box-shadow: var(--glow);
+  }
+
+  .btn-secondary {
+    background: transparent;
+    color: var(--text);
+    border: 1px solid var(--border);
+  }
+
+  .btn:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 10px 25px rgba(205, 173, 119, 0.3);
+  }
+
+  /* Members Grid - 4 columns - Compact without buttons */
+  .members-grid {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 1.5rem;
+    margin-bottom: 2rem;
+  }
+
+  .member-card {
+    background: var(--card);
+    border-radius: var(--radius);
+    border: 1px solid var(--border);
+    overflow: hidden;
+    transition: all 0.4s ease;
+    position: relative;
+    cursor: pointer;
+  }
+
+  .member-card:hover {
+    transform: translateY(-8px);
+    box-shadow: var(--shadow), var(--glow);
+    border-color: var(--brand);
+  }
+
+  .member-image {
+    width: 100%;
+    height: 220px;
+    background-size: cover;
+    background-position: center;
+    position: relative;
+    overflow: hidden;
+    filter: grayscale(20%);
+    transition: filter 0.4s ease;
+  }
+
+  .member-card:hover .member-image {
+    filter: grayscale(0);
+  }
+
+  .member-image::after {
+    content: '';
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    width: 100%;
+    height: 60%;
+    background: linear-gradient(transparent, rgba(0,0,0,0.8));
+  }
+
+  .member-badge {
+    position: absolute;
+    top: 1rem;
+    right: 1rem;
+    background: var(--brand);
+    color: #000;
+    padding: 0.4rem 0.8rem;
+    border-radius: 15px;
+    font-size: 0.7rem;
+    font-weight: 700;
+    border: 1px solid var(--brand-light);
+    z-index: 2;
+  }
+
+  .member-content {
+    padding: 1.2rem;
+  }
+
+  .member-name {
+    font-size: 1.1rem;
+    font-weight: 600;
+    margin-bottom: 0.4rem;
+    color: var(--text);
+  }
+
+  .member-details {
+    color: var(--text-muted);
+    font-size: 0.85rem;
+    margin-bottom: 0.8rem;
+  }
+
+  .member-bio {
+    color: var(--text-muted);
+    font-style: italic;
+    margin-bottom: 1rem;
+    line-height: 1.4;
+    font-size: 0.85rem;
+    display: -webkit-box;
+    -webkit-line-clamp: 2;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+  }
+
+  .arrangement-tags {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.4rem;
+  }
+
+  .arrangement-tag {
+    background: rgba(205, 173, 119, 0.1);
+    color: var(--text-gold);
+    padding: 0.3rem 0.6rem;
+    border-radius: 12px;
+    font-size: 0.7rem;
+    border: 1px solid rgba(205, 173, 119, 0.3);
+  }
+
+  /* Pagination */
+  .pagination {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 0.8rem;
+    margin-top: 2rem;
+    padding-top: 1.5rem;
+    border-top: 1px solid var(--border);
+  }
+
+  .page-btn {
+    padding: 8px 16px;
+    border: 1px solid var(--border);
+    background: transparent;
+    color: var(--text);
+    border-radius: var(--radius);
+    cursor: pointer;
+    transition: all 0.3s ease;
+    font-size: 0.9rem;
+  }
+
+  .page-btn.active {
+    background: var(--brand);
+    color: #000;
+    border-color: var(--brand);
+  }
+
+  .page-btn:hover:not(.active) {
+    background: rgba(255, 255, 255, 0.05);
+  }
+
+  /* Responsive */
+  @media (max-width: 1200px) {
+    .members-grid {
+      grid-template-columns: repeat(3, 1fr);
+    }
+  }
+
+  @media (max-width: 900px) {
+    .members-grid {
+      grid-template-columns: repeat(2, 1fr);
+    }
+  }
+
+  @media (max-width: 768px) {
+    /* Mobile Header */
+    .premium-header {
+      padding: 0.8rem 0;
+    }
+    
+    .nav-container {
+      padding: 0 1rem;
+    }
+    
+    .logo-img {
+      height: 40px;
+    }
+    
+    /* Hide desktop nav, show mobile toggle */
+    .nav-links {
+      display: none;
+    }
+    
+    .mobile-nav-toggle {
+      display: flex;
+    }
+    
+    .app-container {
+      padding: 1rem;
+      margin-top: 70px;
+    }
+    
+    .app-header {
+      flex-direction: column;
+      gap: 1rem;
+      align-items: flex-start;
+    }
+    
+    .app-title {
+      font-size: 1.8rem;
+    }
+    
+    .members-grid {
+      grid-template-columns: 1fr;
+      gap: 1rem;
+    }
+    
+    .member-image {
+      height: 250px;
+    }
+    
+    .action-buttons {
+      width: 100%;
+      justify-content: center;
+    }
+    
+    .btn {
+      flex: 1;
+      text-align: center;
+    }
+
+    /* Mobile Messages */
+    .messages-container {
+      top: 70px;
+      width: 95%;
+    }
+  }
+
+  @media (max-width: 480px) {
+    .members-grid {
+      grid-template-columns: 1fr;
+    }
+    
+    .member-content {
+      padding: 1rem;
+    }
+    
+    .pagination {
+      gap: 0.5rem;
+    }
+    
+    .page-btn {
+      padding: 6px 12px;
+      font-size: 0.8rem;
+    }
+  }
+</style>
+</head>
+<body>
+  <div id="gold-particles"></div>
+  
+  <!-- Success Messages Display -->
+  {% if messages %}
+  <div class="messages-container">
+    {% for message in messages %}
+    <div class="alert">
+      {{ message }}
+      <button class="close-alert">&times;</button>
+    </div>
+    {% endfor %}
+  </div>
+  {% endif %}
+  
+  <header class="premium-header">
+    <div class="nav-container">
+      <a href="{% url 'index' %}" class="logo-premium" aria-label="AgreedDating Homepage">
+        <div class="logo-container">
+          <img src="{% static 'images/aglogo.png' %}" alt="AgreedDating" class="logo-img">
+        </div>
+      </a>
+      
+      <!-- Desktop Navigation -->
+      <nav class="nav-links">
+        <a href="{% url 'discover' %}" class="nav-link active">Discover</a>
+        <a href="#" class="nav-link">Messages</a>
+        <a href="#" class="nav-link">Interests</a>
+        <a href="{% url 'premium' %}" class="nav-link">Premium</a>
+        <a href="{% url 'create_profile' %}" class="nav-link">Profile</a>
+      </nav>
+
+      <!-- Mobile Navigation Toggle -->
+      <button class="mobile-nav-toggle" aria-label="Toggle navigation">
+        <div class="line"></div>
+        <div class="line"></div>
+        <div class="line"></div>
+      </button>
+    </div>
+
+    <!-- Mobile Navigation Menu -->
+    <nav class="mobile-nav">
+      <div class="mobile-nav-links">
+        <a href="{% url 'discover' %}" class="mobile-nav-link active">Discover</a>
+        <a href="#" class="mobile-nav-link">Messages</a>
+        <a href="#" class="mobile-nav-link">Interests</a>
+        <a href="{% url 'premium' %}" class="mobile-nav-link">Premium</a>
+        <a href="{% url 'create_profile' %}" class="mobile-nav-link">Profile</a>
+      </div>
+    </nav>
+  </header>
+
+  <main class="app-container">
+    <div class="app-header">
+      <h1 class="app-title">Elite <span class="gold-accent">Members</span></h1>
+      <div class="action-buttons">
+        <a href="{% url 'premium' %}" class="btn btn-primary">Upgrade to Premium</a>
+      </div>
+    </div>
+
+    <section class="members-grid">
+      <!-- Row 1 -->
+      <article class="member-card" onclick="window.location.href='{% url 'profile_detail' 'sparticus' %}'">
+        <div class="member-image" style="background-image: url('https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?ixlib=rb-4.0.3&auto=format&fit=crop&w=500&q=80')">
+          <div class="member-badge">Verified</div>
+        </div>
+        <div class="member-content">
+          <h3 class="member-name">Sparticus</h3>
+          <p class="member-details">37 • ACT, Australia</p>
+          <p class="member-bio">Come to new heights with me. Experience sophistication and adventure.</p>
+          <div class="arrangement-tags">
+            <span class="arrangement-tag">Casual</span>
+            <span class="arrangement-tag">Friends</span>
+          </div>
+        </div>
+      </article>
+
+      <article class="member-card" onclick="window.location.href='{% url 'profile_detail' 'notyourdaddy' %}'">
+        <div class="member-image" style="background-image: url('https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?ixlib=rb-4.0.3&auto=format&fit=crop&w=500&q=80')">
+          <div class="member-badge">Premium</div>
+        </div>
+        <div class="member-content">
+          <h3 class="member-name">NotYourDaddy</h3>
+          <p class="member-details">48 • San Diego, USA</p>
+          <p class="member-bio">Sophisticated gentleman seeking meaningful connections.</p>
+          <div class="arrangement-tags">
+            <span class="arrangement-tag">Casual</span>
+          </div>
+        </div>
+      </article>
+
+      <article class="member-card" onclick="window.location.href='{% url 'profile_detail' 'xekitten' %}'">
+        <div class="member-image" style="background-image: url('https://images.unsplash.com/photo-1544005313-94ddf0286df2?ixlib=rb-4.0.3&auto=format&fit=crop&w=500&q=80')">
+          <div class="member-badge">New</div>
+        </div>
+        <div class="member-content">
+          <h3 class="member-name">X E Kitten</h3>
+          <p class="member-details">23 • Canberra ACT</p>
+          <p class="member-bio">I will make your dreams come true. Let's create beautiful moments.</p>
+          <div class="arrangement-tags">
+            <span class="arrangement-tag">Long Term</span>
+            <span class="arrangement-tag">Friends</span>
+          </div>
+        </div>
+      </article>
+
+      <article class="member-card" onclick="window.location.href='{% url 'profile_detail' 'bellerophon' %}'">
+        <div class="member-image" style="background-image: url('https://images.unsplash.com/photo-1560250097-0b93528c311a?ixlib=rb-4.0.3&auto=format&fit=crop&w=500&q=80')">
+          <div class="member-badge">Featured</div>
+        </div>
+        <div class="member-content">
+          <h3 class="member-name">Bellerophon</h3>
+          <p class="member-details">47 • Brisbane QLD</p>
+          <p class="member-bio">Successful professional seeking genuine connections.</p>
+          <div class="arrangement-tags">
+            <span class="arrangement-tag">Casual</span>
+            <span class="arrangement-tag">Long Term</span>
+          </div>
+        </div>
+      </article>
+
+      <!-- Row 2 -->
+      <article class="member-card" onclick="window.location.href='{% url 'profile_detail' 'sophia' %}'">
+        <div class="member-image" style="background-image: url('https://images.unsplash.com/photo-1534528741775-53994a69daeb?ixlib=rb-4.0.3&auto=format&fit=crop&w=500&q=80')">
+          <div class="member-badge">Verified</div>
+        </div>
+        <div class="member-content">
+          <h3 class="member-name">Sophia</h3>
+          <p class="member-details">29 • Sydney, Australia</p>
+          <p class="member-bio">Art lover and world traveler seeking intellectual conversations.</p>
+          <div class="arrangement-tags">
+            <span class="arrangement-tag">Long Term</span>
+            <span class="arrangement-tag">Cultural</span>
+          </div>
+        </div>
+      </article>
+
+      <article class="member-card" onclick="window.location.href='{% url 'profile_detail' 'marcus' %}'">
+        <div class="member-image" style="background-image: url('https://images.unsplash.com/photo-1500648767791-00dcc994a43e?ixlib=rb-4.0.3&auto=format&fit=crop&w=500&q=80')">
+          <div class="member-badge">Premium</div>
+        </div>
+        <div class="member-content">
+          <h3 class="member-name">Marcus</h3>
+          <p class="member-details">35 • Melbourne</p>
+          <p class="member-bio">Wine connoisseur and adventure seeker looking for genuine connections.</p>
+          <div class="arrangement-tags">
+            <span class="arrangement-tag">Short Term</span>
+            <span class="arrangement-tag">Dining</span>
+          </div>
+        </div>
+      </article>
+
+      <article class="member-card" onclick="window.location.href='{% url 'profile_detail' 'isabella' %}'">
+        <div class="member-image" style="background-image: url('https://images.unsplash.com/photo-1494790108755-2616b612b786?ixlib=rb-4.0.3&auto=format&fit=crop&w=500&q=80')">
+          <div class="member-badge">New</div>
+        </div>
+        <div class="member-content">
+          <h3 class="member-name">Isabella</h3>
+          <p class="member-details">26 • Perth, Australia</p>
+          <p class="member-bio">Fashion designer with passion for art and meaningful connections.</p>
+          <div class="arrangement-tags">
+            <span class="arrangement-tag">Long Term</span>
+            <span class="arrangement-tag">Creative</span>
+          </div>
+        </div>
+      </article>
+
+      <article class="member-card" onclick="window.location.href='{% url 'profile_detail' 'james' %}'">
+        <div class="member-image" style="background-image: url('https://images.unsplash.com/photo-1519345182560-3f2917c472ef?ixlib=rb-4.0.3&auto=format&fit=crop&w=500&q=80')">
+          <div class="member-badge">Featured</div>
+        </div>
+        <div class="member-content">
+          <h3 class="member-name">James</h3>
+          <p class="member-details">42 • Gold Coast</p>
+          <p class="member-bio">Entrepreneur and surf enthusiast seeking adventurous partner.</p>
+          <div class="arrangement-tags">
+            <span class="arrangement-tag">Casual</span>
+            <span class="arrangement-tag">Active</span>
+          </div>
+        </div>
+      </article>
+
+      <!-- Row 3 -->
+      <article class="member-card" onclick="window.location.href='{% url 'profile_detail' 'emma' %}'">
+        <div class="member-image" style="background-image: url('https://images.unsplash.com/photo-1488426862026-3ee34a7d66df?ixlib=rb-4.0.3&auto=format&fit=crop&w=500&q=80')">
+          <div class="member-badge">Verified</div>
+        </div>
+        <div class="member-content">
+          <h3 class="member-name">Emma</h3>
+          <p class="member-details">31 • Adelaide</p>
+          <p class="member-bio">Yoga instructor and wellness coach seeking balanced relationship.</p>
+          <div class="arrangement-tags">
+            <span class="arrangement-tag">Long Term</span>
+            <span class="arrangement-tag">Wellness</span>
+          </div>
+        </div>
+      </article>
+
+      <article class="member-card" onclick="window.location.href='{% url 'profile_detail' 'lucas' %}'">
+        <div class="member-image" style="background-image: url('https://images.unsplash.com/photo-1507591064344-4c6ce005b128?ixlib=rb-4.0.3&auto=format&fit=crop&w=500&q=80')">
+          <div class="member-badge">Premium</div>
+        </div>
+        <div class="member-content">
+          <h3 class="member-name">Lucas</h3>
+          <p class="member-details">38 • Wellington, NZ</p>
+          <p class="member-bio">Chef and food critic looking for someone to share culinary adventures.</p>
+          <div class="arrangement-tags">
+            <span class="arrangement-tag">Casual</span>
+            <span class="arrangement-tag">Foodie</span>
+          </div>
+        </div>
+      </article>
+
+      <article class="member-card" onclick="window.location.href='{% url 'profile_detail' 'chloe' %}'">
+        <div class="member-image" style="background-image: url('https://images.unsplash.com/photo-1531123897727-8f129e1688ce?ixlib=rb-4.0.3&auto=format&fit=crop&w=500&q=80')">
+          <div class="member-badge">New</div>
+        </div>
+        <div class="member-content">
+          <h3 class="member-name">Chloe</h3>
+          <p class="member-details">27 • Auckland, NZ</p>
+          <p class="member-bio">Marine biologist and conservationist passionate about ocean life.</p>
+          <div class="arrangement-tags">
+            <span class="arrangement-tag">Long Term</span>
+            <span class="arrangement-tag">Nature</span>
+          </div>
+        </div>
+      </article>
+
+      <article class="member-card" onclick="window.location.href='{% url 'profile_detail' 'noah' %}'">
+        <div class="member-image" style="background-image: url('https://images.unsplash.com/photo-1463453091185-61582044d556?ixlib=rb-4.0.3&auto=format&fit=crop&w=500&q=80')">
+          <div class="member-badge">Featured</div>
+        </div>
+        <div class="member-content">
+          <h3 class="member-name">Noah</h3>
+          <p class="member-details">45 • Queenstown, NZ</p>
+          <p class="member-bio">Adventure guide and photographer seeking thrill-seeking partner.</p>
+          <div class="arrangement-tags">
+            <span class="arrangement-tag">Casual</span>
+            <span class="arrangement-tag">Adventure</span>
+          </div>
+        </div>
+      </article>
+    </section>
+
+    <!-- Pagination -->
+    <div class="pagination">
+      <button class="page-btn">Previous</button>
+      <button class="page-btn active">1</button>
+      <button class="page-btn">2</button>
+      <button class="page-btn">3</button>
+      <button class="page-btn">Next</button>
+    </div>
+  </main>
+
+  <script>
+    document.addEventListener('DOMContentLoaded', function() {
+      // Create gold particles
+      function createGoldParticles() {
+        const container = document.getElementById('gold-particles');
+        for (let i = 0; i < 15; i++) {
+          const particle = document.createElement('div');
+          particle.className = 'gold-particle';
+          particle.style.left = Math.random() * 100 + 'vw';
+          particle.style.top = Math.random() * 100 + 'vh';
+          particle.style.animationDelay = Math.random() * 6 + 's';
+          container.appendChild(particle);
+        }
+      }
+      
+      createGoldParticles();
+
+      // Mobile navigation toggle
+      const mobileToggle = document.querySelector('.mobile-nav-toggle');
+      const mobileNav = document.querySelector('.mobile-nav');
+      
+      if (mobileToggle) {
+        mobileToggle.addEventListener('click', function() {
+          mobileNav.classList.toggle('open');
+          this.classList.toggle('active');
+        });
+      }
+
+      // Close mobile nav when clicking outside
+      document.addEventListener('click', function(event) {
+        if (!event.target.closest('.nav-container') && mobileNav.classList.contains('open')) {
+          mobileNav.classList.remove('open');
+          mobileToggle.classList.remove('active');
+        }
+      });
+
+      // Add hover effects to member cards
+      const memberCards = document.querySelectorAll('.member-card');
+      memberCards.forEach(card => {
+        card.addEventListener('mouseenter', () => {
+          card.style.transform = 'translateY(-8px) scale(1.02)';
+        });
+        
+        card.addEventListener('mouseleave', () => {
+          card.style.transform = 'translateY(0) scale(1)';
+        });
+      });
+
+      // Pagination functionality
+      const pageButtons = document.querySelectorAll('.page-btn');
+      pageButtons.forEach(button => {
+        button.addEventListener('click', function() {
+          pageButtons.forEach(btn => btn.classList.remove('active'));
+          this.classList.add('active');
+        });
+      });
+
+      // Close alert messages
+      document.querySelectorAll('.close-alert').forEach(button => {
+        button.addEventListener('click', function() {
+          const alert = this.closest('.alert');
+          alert.style.animation = 'slideUp 0.3s ease-in forwards';
+          setTimeout(() => {
+            alert.remove();
+          }, 300);
+        });
+      });
+
+      // Auto-remove alerts after 5 seconds
+      setTimeout(() => {
+        document.querySelectorAll('.alert').forEach(alert => {
+          alert.style.animation = 'slideUp 0.3s ease-in forwards';
+          setTimeout(() => alert.remove(), 300);
+        });
+      }, 5000);
+    });
+
+    // Add gold particle styles
+    const style = document.createElement('style');
+    style.textContent = `
+      .gold-particle {
+        position: absolute;
+        width: 4px;
+        height: 4px;
+        background: var(--brand);
+        border-radius: 50%;
+        animation: floatParticle 6s ease-in-out infinite;
+        opacity: 0.6;
+        pointer-events: none;
+        z-index: 1;
+      }
+
+      @keyframes floatParticle {
+        0%, 100% {
+          transform: translateY(0px) translateX(0px);
+          opacity: 0;
+        }
+        50% {
+          opacity: 0.8;
+        }
+        25%, 75% {
+          transform: translateY(-20px) translateX(10px);
+        }
+      }
+    `;
+    document.head.appendChild(style);
+  </script>
+</body>
+</html>
