@@ -51,7 +51,7 @@ def trust(request):
     return render(request, 'website/trustsafety.html')
 
 def success_stories(request):
-    return render(request, 'website/sucessstories.html')
+    return render(request, 'website/successstories.html')  # Fixed typo
 
 def about(request):
     return render(request, 'website/aboutus.html')
@@ -73,32 +73,41 @@ def dashboard(request):
     return render(request, 'website/dashboard.html')
 
 def create_profile_step1(request):
-    messages.success(request, 'Profile creation started! Complete your profile to get matches.')
-    return render(request, 'website/createprofile1.html')
-
-def create_profile_step2(request):
     if request.method == 'POST':
         # Process step 1 data and move to step 2
         messages.success(request, 'Basic info saved! Now tell us more about yourself.')
-        return render(request, 'website/createprofile2.html')
-    return redirect('create_profile_step1')
+        return redirect('create_profile_step2')
+    
+    # GET request - show the form
+    messages.success(request, 'Profile creation started! Complete your profile to get matches.')
+    return render(request, 'website/create_profile_step1.html')  # FIXED NAME
 
-def create_profile_step3(request):
+def create_profile_step2(request):
     if request.method == 'POST':
         # Process step 2 data and move to step 3
         messages.success(request, 'Personal details saved! Almost done.')
-        return render(request, 'website/createprofile3.html')
-    return redirect('create_profile_step1')
+        return redirect('create_profile_step3')
+    
+    # GET request - show the form
+    return render(request, 'website/create_profile_step2.html')  # FIXED NAME
+
+def create_profile_step3(request):
+    if request.method == 'POST':
+        # Process step 3 data and move to step 4
+        messages.success(request, 'Preferences saved! Final step.')
+        return redirect('create_profile_step4')
+    
+    # GET request - show the form
+    return render(request, 'website/create_profile_step3.html')  # FIXED NAME
 
 def create_profile_step4(request):
     if request.method == 'POST':
-        # Process step 3 data and redirect to success page
+        # Process step 4 data and redirect to success page
         messages.success(request, 'Profile completed successfully! Welcome to AgreedDating.')
         return redirect('join_success')
     
     # GET request - show the form
-    messages.success(request, 'Preferences saved! Final step.')
-    return render(request, 'website/createprofile4.html')
+    return render(request, 'website/create_profile_step4.html')  # FIXED NAME
 
 def create_profile(request):
     # Main profile creation entry point
