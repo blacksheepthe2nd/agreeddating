@@ -1,0 +1,782 @@
+{% load static %}
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width,initial-scale=1" />
+<title>AgreedDating — {{ username }}'s Profile</title>
+<meta name="description" content="Where sophisticated connections meet meaningful relationships. Premium dating for discerning singles." />
+
+<style>
+  :root {
+    /* Premium gold color palette */
+    --brand: #cdad7c;
+    --brand-dark: #a88a5a;
+    --brand-light: #e8d8b8;
+    --brand-glow: rgba(205, 173, 119, 0.3);
+    
+    /* Sophisticated backgrounds */
+    --bg-dark: #0a0a0a;
+    --bg-deep: #121212;
+    --bg-charcoal: #1a1a1a;
+    --bg-gradient: linear-gradient(135deg, #0a0a0a 0%, #1a1a1a 50%, #2a2a2a 100%);
+    
+    --card: rgba(255, 255, 255, 0.03);
+    --card-hover: rgba(255, 255, 255, 0.06);
+    --text: #ffffff;
+    --text-muted: #a0a0a0;
+    --text-gold: #cdad7c;
+    --border: rgba(205, 173, 119, 0.3);
+    --radius: 20px;
+    --shadow: 0 25px 50px rgba(0, 0, 0, 0.5);
+    --glow: 0 0 60px rgba(205, 173, 119, 0.2);
+    --brand-nav-link: #cdad7f;
+  }
+
+  * { 
+    box-sizing: border-box; 
+    margin: 0; 
+    padding: 0; 
+  }
+  
+  body {
+    background: var(--bg-gradient);
+    color: var(--text);
+    font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+    line-height: 1.7;
+    min-height: 100vh;
+    overflow-x: hidden;
+  }
+  
+  /* Premium Header */
+  .premium-header {
+    position: fixed;
+    top: 0;
+    width: 100%;
+    background: rgba(10, 10, 10, 0.95);
+    backdrop-filter: blur(20px);
+    border-bottom: 1px solid var(--border);
+    z-index: 1000;
+    padding: 1rem 0;
+  }
+
+  .nav-container {
+    max-width: 1400px;
+    margin: 0 auto;
+    padding: 0 2rem;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+  }
+
+  .logo-premium {
+    display: flex;
+    align-items: center;
+    text-decoration: none;
+  }
+
+  .logo-img {
+    height: 50px;
+    width: auto;
+    max-width: 200px;
+    object-fit: contain;
+  }
+  
+  /* Premium Navigation Icons - Desktop */
+  .nav-icons {
+    display: flex;
+    gap: 1.5rem;
+    align-items: center;
+  }
+
+  .nav-icon {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-decoration: none;
+    color: var(--brand-nav-link);
+    transition: all 0.3s ease;
+    padding: 0.5rem 0.8rem;
+    border-radius: 12px;
+    position: relative;
+    min-width: 70px;
+  }
+
+  .nav-icon:hover {
+    color: var(--text);
+    background: rgba(205, 173, 119, 0.1);
+    transform: translateY(-2px);
+  }
+
+  .nav-icon.active {
+    color: var(--text-gold);
+    background: rgba(205, 173, 119, 0.15);
+  }
+
+  .nav-icon.active::after {
+    content: '';
+    position: absolute;
+    bottom: -12px;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 4px;
+    height: 4px;
+    background: var(--text-gold);
+    border-radius: 50%;
+  }
+
+  .icon-svg {
+    width: 20px;
+    height: 20px;
+    margin-bottom: 0.3rem;
+    stroke: currentColor;
+    fill: none;
+    stroke-width: 2;
+    stroke-linecap: round;
+    stroke-linejoin: round;
+  }
+
+  .icon-label {
+    font-size: 0.7rem;
+    font-weight: 500;
+    text-align: center;
+    line-height: 1.2;
+  }
+
+  /* Mobile Navigation */
+  .mobile-nav-toggle {
+    display: none;
+    flex-direction: column;
+    justify-content: space-between;
+    width: 30px;
+    height: 25px;
+    background: transparent;
+    border: none;
+    cursor: pointer;
+  }
+
+  .mobile-nav-toggle .line {
+    width: 100%;
+    height: 3px;
+    background: var(--text-gold);
+    transition: all 0.3s ease;
+    transform-origin: center;
+  }
+
+  .mobile-nav {
+    display: none;
+    position: fixed;
+    top: 80px;
+    left: 0;
+    width: 100%;
+    background: rgba(10, 10, 10, 0.98);
+    backdrop-filter: blur(20px);
+    border-bottom: 1px solid var(--border);
+    padding: 1rem 0;
+    z-index: 999;
+  }
+
+  .mobile-nav.open {
+    display: block;
+  }
+
+  .mobile-nav-icons {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 1rem;
+    padding: 0 2rem;
+    max-width: 400px;
+    margin: 0 auto;
+  }
+
+  .mobile-nav-icon {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-decoration: none;
+    color: var(--brand-nav-link);
+    padding: 1rem 0.5rem;
+    border-radius: 12px;
+    transition: all 0.3s ease;
+  }
+
+  .mobile-nav-icon:hover {
+    background: rgba(205, 173, 119, 0.1);
+    color: var(--text);
+  }
+
+  .mobile-nav-icon .icon-svg {
+    width: 24px;
+    height: 24px;
+    margin-bottom: 0.5rem;
+  }
+
+  .mobile-nav-icon .icon-label {
+    font-size: 0.75rem;
+  }
+
+  /* Profile Details Layout */
+  .profile-container {
+    margin-top: 100px;
+    padding: 2rem;
+    max-width: 1200px;
+    margin-left: auto;
+    margin-right: auto;
+  }
+
+  .back-button {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+    color: var(--text-gold);
+    text-decoration: none;
+    margin-bottom: 2rem;
+    padding: 0.8rem 1.5rem;
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    transition: all 0.3s ease;
+  }
+
+  .back-button:hover {
+    background: rgba(205, 173, 119, 0.1);
+    transform: translateX(-5px);
+  }
+
+  .profile-details {
+    display: grid;
+    grid-template-columns: 400px 1fr;
+    gap: 3rem;
+    align-items: start;
+  }
+
+  .profile-image-section {
+    position: relative;
+  }
+
+  .profile-main-image {
+    width: 100%;
+    height: 500px;
+    background-size: cover;
+    background-position: center;
+    border-radius: var(--radius);
+    border: 2px solid var(--border);
+    position: relative;
+    overflow: hidden;
+  }
+
+  .profile-badge-large {
+    position: absolute;
+    top: 1.5rem;
+    right: 1.5rem;
+    background: var(--brand);
+    color: #000;
+    padding: 0.8rem 1.5rem;
+    border-radius: 25px;
+    font-size: 0.9rem;
+    font-weight: 700;
+    border: 2px solid var(--brand-light);
+    box-shadow: var(--glow);
+  }
+
+  .profile-info-section {
+    padding: 2rem 0;
+  }
+
+  .profile-header {
+    margin-bottom: 2rem;
+  }
+
+  .profile-name-large {
+    font-size: 3rem;
+    font-weight: 300;
+    color: var(--text);
+    margin-bottom: 0.5rem;
+  }
+
+  .profile-details-large {
+    font-size: 1.3rem;
+    color: var(--text-muted);
+    margin-bottom: 1.5rem;
+  }
+
+  .profile-bio-large {
+    font-size: 1.2rem;
+    color: var(--text);
+    line-height: 1.6;
+    margin-bottom: 2rem;
+    font-style: italic;
+  }
+
+  .arrangement-section {
+    margin-bottom: 2rem;
+  }
+
+  .section-title {
+    font-size: 1.5rem;
+    color: var(--text-gold);
+    margin-bottom: 1rem;
+    font-weight: 600;
+  }
+
+  .arrangement-tags-large {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 1rem;
+  }
+
+  .arrangement-tag-large {
+    background: rgba(205, 173, 119, 0.15);
+    color: var(--text-gold);
+    padding: 1rem 1.5rem;
+    border-radius: 15px;
+    font-size: 1rem;
+    border: 2px solid rgba(205, 173, 119, 0.3);
+    transition: all 0.3s ease;
+  }
+
+  .arrangement-tag-large:hover {
+    background: rgba(205, 173, 119, 0.25);
+    transform: translateY(-2px);
+  }
+
+  .about-section {
+    margin-bottom: 2rem;
+  }
+
+  .about-content {
+    background: var(--card);
+    padding: 2rem;
+    border-radius: var(--radius);
+    border: 1px solid var(--border);
+    line-height: 1.6;
+  }
+
+  .profile-actions {
+    display: flex;
+    gap: 1rem;
+    margin-top: 2rem;
+  }
+
+  .btn {
+    padding: 15px 30px;
+    border-radius: var(--radius);
+    font-weight: 600;
+    text-decoration: none;
+    transition: all 0.4s ease;
+    border: none;
+    cursor: pointer;
+    font-size: 1rem;
+  }
+
+  .btn-primary {
+    background: linear-gradient(135deg, var(--brand), var(--brand-dark));
+    color: #000;
+    box-shadow: var(--glow);
+    flex: 2;
+  }
+
+  .btn-secondary {
+    background: transparent;
+    color: var(--text);
+    border: 2px solid var(--border);
+    flex: 1;
+  }
+
+  .btn:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 15px 30px rgba(205, 173, 119, 0.3);
+  }
+
+  /* Gallery Section */
+  .gallery-section {
+    margin-top: 3rem;
+  }
+
+  .gallery-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 1rem;
+    margin-top: 1rem;
+  }
+
+  .gallery-item {
+    height: 200px;
+    background-size: cover;
+    background-position: center;
+    border-radius: 15px;
+    border: 2px solid var(--border);
+    transition: all 0.3s ease;
+    cursor: pointer;
+  }
+
+  .gallery-item:hover {
+    transform: scale(1.05);
+    border-color: var(--brand);
+  }
+
+  /* Responsive */
+  @media (max-width: 1100px) {
+    .nav-icons {
+      gap: 1rem;
+    }
+    
+    .nav-icon {
+      padding: 0.5rem 0.6rem;
+      min-width: 65px;
+    }
+    
+    .icon-label {
+      font-size: 0.65rem;
+    }
+  }
+
+  @media (max-width: 968px) {
+    .profile-details {
+      grid-template-columns: 1fr;
+    }
+    
+    .profile-main-image {
+      height: 400px;
+    }
+    
+    /* Hide desktop nav, show mobile toggle */
+    .nav-icons {
+      display: none;
+    }
+    
+    .mobile-nav-toggle {
+      display: flex;
+    }
+  }
+
+  @media (max-width: 768px) {
+    .nav-container {
+      padding: 0 1rem;
+    }
+    
+    .profile-container {
+      padding: 1rem;
+      margin-top: 80px;
+    }
+    
+    .profile-name-large {
+      font-size: 2.5rem;
+    }
+    
+    .gallery-grid {
+      grid-template-columns: repeat(2, 1fr);
+    }
+    
+    .profile-actions {
+      flex-direction: column;
+    }
+    
+    .mobile-nav-icons {
+      grid-template-columns: repeat(2, 1fr);
+    }
+  }
+
+  @media (max-width: 480px) {
+    .logo-img {
+      height: 40px;
+    }
+    
+    .profile-name-large {
+      font-size: 2rem;
+    }
+    
+    .arrangement-tags-large {
+      gap: 0.5rem;
+    }
+    
+    .arrangement-tag-large {
+      padding: 0.8rem 1rem;
+      font-size: 0.9rem;
+    }
+    
+    .mobile-nav-icons {
+      grid-template-columns: 1fr;
+    }
+  }
+</style>
+</head>
+<body>
+  <div id="gold-particles"></div>
+  
+  <header class="premium-header">
+    <div class="nav-container">
+      <a href="{% url 'index' %}" class="logo-premium" aria-label="AgreedDating Homepage">
+        <div class="logo-container">
+          <img src="{% static 'images/aglogo.png' %}" alt="AgreedDating" class="logo-img">
+        </div>
+      </a>
+      
+      <!-- Desktop Navigation Icons -->
+      <nav class="nav-icons">
+        <a href="#" class="nav-icon">
+          <svg class="icon-svg" viewBox="0 0 24 24">
+            <circle cx="11" cy="11" r="8"/>
+            <path d="m21 21-4.3-4.3"/>
+          </svg>
+          <span class="icon-label">SEARCH</span>
+        </a>
+        
+        <a href="#" class="nav-icon">
+          <svg class="icon-svg" viewBox="0 0 24 24">
+            <path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/>
+          </svg>
+          <span class="icon-label">MESSAGES</span>
+        </a>
+        
+        <a href="#" class="nav-icon">
+          <svg class="icon-svg" viewBox="0 0 24 24">
+            <path d="M14.5 2.134a1 1 0 0 1 1 0l6 3.464a1 1 0 0 1 .5.866V20a1 1 0 0 1-.5.866l-6 3.464a1 1 0 0 1-1 0l-6-3.464A1 1 0 0 1 2 20V6.464a1 1 0 0 1 .5-.866z"/>
+            <path d="M9 12h6"/>
+          </svg>
+          <span class="icon-label">INTERESTS</span>
+        </a>
+        
+        <a href="#" class="nav-icon">
+          <svg class="icon-svg" viewBox="0 0 24 24">
+            <path d="M12 2a8 8 0 0 0-8 8c0 6 8 12 8 12s8-6 8-12a8 8 0 0 0-8-8z"/>
+            <circle cx="12" cy="10" r="3"/>
+          </svg>
+          <span class="icon-label">HOTDATES</span>
+        </a>
+        
+        <a href="#" class="nav-icon">
+          <svg class="icon-svg" viewBox="0 0 24 24">
+            <path d="M12 5v14M5 12h14"/>
+          </svg>
+          <span class="icon-label">POST DATE</span>
+        </a>
+        
+        <a href="{% url 'premium' %}" class="nav-icon">
+          <svg class="icon-svg" viewBox="0 0 24 24">
+            <path d="m5 12 7-7 7 7M12 19V5"/>
+          </svg>
+          <span class="icon-label">UPGRADE</span>
+        </a>
+      </nav>
+
+      <!-- Mobile Navigation Toggle -->
+      <button class="mobile-nav-toggle" aria-label="Toggle navigation">
+        <div class="line"></div>
+        <div class="line"></div>
+        <div class="line"></div>
+      </button>
+    </div>
+
+    <!-- Mobile Navigation Menu -->
+    <nav class="mobile-nav">
+      <div class="mobile-nav-icons">
+        <a href="#" class="mobile-nav-icon">
+          <svg class="icon-svg" viewBox="0 0 24 24">
+            <circle cx="11" cy="11" r="8"/>
+            <path d="m21 21-4.3-4.3"/>
+          </svg>
+          <span class="icon-label">SEARCH</span>
+        </a>
+        
+        <a href="#" class="mobile-nav-icon">
+          <svg class="icon-svg" viewBox="0 0 24 24">
+            <path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/>
+          </svg>
+          <span class="icon-label">MESSAGES</span>
+        </a>
+        
+        <a href="#" class="mobile-nav-icon">
+          <svg class="icon-svg" viewBox="0 0 24 24">
+            <path d="M14.5 2.134a1 1 0 0 1 1 0l6 3.464a1 1 0 0 1 .5.866V20a1 1 0 0 1-.5.866l-6 3.464a1 1 0 0 1-1 0l-6-3.464A1 1 0 0 1 2 20V6.464a1 1 0 0 1 .5-.866z"/>
+            <path d="M9 12h6"/>
+          </svg>
+          <span class="icon-label">INTERESTS</span>
+        </a>
+        
+        <a href="#" class="mobile-nav-icon">
+          <svg class="icon-svg" viewBox="0 0 24 24">
+            <path d="M12 2a8 8 0 0 0-8 8c0 6 8 12 8 12s8-6 8-12a8 8 0 0 0-8-8z"/>
+            <circle cx="12" cy="10" r="3"/>
+          </svg>
+          <span class="icon-label">HOTDATES</span>
+        </a>
+        
+        <a href="#" class="mobile-nav-icon">
+          <svg class="icon-svg" viewBox="0 0 24 24">
+            <path d="M12 5v14M5 12h14"/>
+          </svg>
+          <span class="icon-label">POST DATE</span>
+        </a>
+        
+        <a href="{% url 'premium' %}" class="mobile-nav-icon">
+          <svg class="icon-svg" viewBox="0 0 24 24">
+            <path d="m5 12 7-7 7 7M12 19V5"/>
+          </svg>
+          <span class="icon-label">UPGRADE</span>
+        </a>
+      </div>
+    </nav>
+  </header>
+
+  <main class="profile-container">
+    <!-- Back Button -->
+    <a href="{% url 'discover' %}" class="back-button">
+      <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+        <path d="M19 12H5M12 19l-7-7 7-7"/>
+      </svg>
+      Back to Discover
+    </a>
+
+    <div class="profile-details">
+      <!-- Profile Image Section -->
+      <div class="profile-image-section">
+        <div class="profile-main-image" style="background-image: url('https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80')">
+          <div class="profile-badge-large">VERIFIED</div>
+        </div>
+        
+        <!-- Gallery -->
+        <div class="gallery-section">
+          <h3 class="section-title">Gallery</h3>
+          <div class="gallery-grid">
+            <div class="gallery-item" style="background-image: url('https://images.unsplash.com/photo-1519085360753-af0119f7cbe7?ixlib=rb-4.0.3&auto=format&fit=crop&w=400&q=80')"></div>
+            <div class="gallery-item" style="background-image: url('https://images.unsplash.com/photo-1502673530728-f79b4cab31b1?ixlib=rb-4.0.3&auto=format&fit=crop&w=400&q=80')"></div>
+            <div class="gallery-item" style="background-image: url('https://images.unsplash.com/photo-1540569876033-6e5d046a1d77?ixlib=rb-4.0.3&auto=format&fit=crop&w=400&q=80')"></div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Profile Info Section -->
+      <div class="profile-info-section">
+        <div class="profile-header">
+          <h1 class="profile-name-large">{{ username|title }}</h1>
+          <p class="profile-details-large">37 • ACT, Australia • Entrepreneur</p>
+          <p class="profile-bio-large">"Come to new heights with me. Experience sophistication and adventure in every moment."</p>
+        </div>
+
+        <!-- Arrangement Preferences -->
+        <div class="arrangement-section">
+          <h3 class="section-title">Arrangement Preferences</h3>
+          <div class="arrangement-tags-large">
+            <span class="arrangement-tag-large">Casual Dating</span>
+            <span class="arrangement-tag-large">Discuss When Meet</span>
+            <span class="arrangement-tag-large">Friends with Benefits</span>
+            <span class="arrangement-tag-large">Adventure Partner</span>
+          </div>
+        </div>
+
+        <!-- About Section -->
+        <div class="about-section">
+          <h3 class="section-title">About Me</h3>
+          <div class="about-content">
+            <p>As a successful entrepreneur with a passion for life's finer things, I believe in creating meaningful connections that go beyond the surface. I'm equally comfortable discussing business strategy over fine wine as I am exploring hidden hiking trails at sunrise.</p>
+            
+            <p><strong>My Passions:</strong> Fine dining, international travel, mountain adventures, contemporary art, and intellectual conversations that stretch late into the night.</p>
+            
+            <p><strong>Looking For:</strong> Someone who appreciates both luxury and authenticity. A partner who can enjoy a five-star resort but isn't afraid to get their hands dirty on an adventure. Intelligence, humor, and emotional availability are my non-negotiables.</p>
+            
+            <p>Let's create unforgettable experiences together and see where the journey takes us.</p>
+          </div>
+        </div>
+
+        <!-- Lifestyle -->
+        <div class="arrangement-section">
+          <h3 class="section-title">Lifestyle & Interests</h3>
+          <div class="arrangement-tags-large">
+            <span class="arrangement-tag-large">Fine Dining</span>
+            <span class="arrangement-tag-large">Travel</span>
+            <span class="arrangement-tag-large">Adventure Sports</span>
+            <span class="arrangement-tag-large">Art Galleries</span>
+            <span class="arrangement-tag-large">Wine Tasting</span>
+            <span class="arrangement-tag-large">Yachting</span>
+          </div>
+        </div>
+
+        <!-- Action Buttons -->
+        <div class="profile-actions">
+          <button class="btn btn-primary">Send Message</button>
+          <button class="btn btn-secondary">Add to Favorites</button>
+        </div>
+      </div>
+    </div>
+  </main>
+
+  <script>
+    document.addEventListener('DOMContentLoaded', function() {
+      // Create gold particles
+      function createGoldParticles() {
+        const container = document.getElementById('gold-particles');
+        for (let i = 0; i < 15; i++) {
+          const particle = document.createElement('div');
+          particle.className = 'gold-particle';
+          particle.style.left = Math.random() * 100 + 'vw';
+          particle.style.top = Math.random() * 100 + 'vh';
+          particle.style.animationDelay = Math.random() * 6 + 's';
+          container.appendChild(particle);
+        }
+      }
+      
+      createGoldParticles();
+
+      // Mobile navigation toggle
+      const mobileToggle = document.querySelector('.mobile-nav-toggle');
+      const mobileNav = document.querySelector('.mobile-nav');
+      
+      if (mobileToggle) {
+        mobileToggle.addEventListener('click', function() {
+          mobileNav.classList.toggle('open');
+          this.classList.toggle('active');
+        });
+      }
+
+      // Close mobile nav when clicking outside
+      document.addEventListener('click', function(event) {
+        if (!event.target.closest('.nav-container') && mobileNav.classList.contains('open')) {
+          mobileNav.classList.remove('open');
+          mobileToggle.classList.remove('active');
+        }
+      });
+
+      // Gallery image click handler
+      const galleryItems = document.querySelectorAll('.gallery-item');
+      galleryItems.forEach(item => {
+        item.addEventListener('click', function() {
+          const mainImage = document.querySelector('.profile-main-image');
+          const tempBg = mainImage.style.backgroundImage;
+          mainImage.style.backgroundImage = this.style.backgroundImage;
+          this.style.backgroundImage = tempBg;
+        });
+      });
+    });
+
+    // Add gold particle styles
+    const style = document.createElement('style');
+    style.textContent = `
+      .gold-particle {
+        position: absolute;
+        width: 4px;
+        height: 4px;
+        background: var(--brand);
+        border-radius: 50%;
+        animation: floatParticle 6s ease-in-out infinite;
+        opacity: 0.6;
+        pointer-events: none;
+        z-index: 1;
+      }
+
+      @keyframes floatParticle {
+        0%, 100% {
+          transform: translateY(0px) translateX(0px);
+          opacity: 0;
+        }
+        50% {
+          opacity: 0.8;
+        }
+        25%, 75% {
+          transform: translateY(-20px) translateX(10px);
+        }
+      }
+    `;
+    document.head.appendChild(style);
+  </script>
+</body>
+</html>

@@ -1,4 +1,4 @@
-from django.urls import path
+from django.urls import path, re_path
 from . import views
 
 urlpatterns = [
@@ -17,4 +17,12 @@ urlpatterns = [
     path('discover/', views.discover, name='discover'),
     path('events/', views.events, name='events'),
     path('faq/', views.faq, name='faq'),
+    path('dashboard/', views.dashboard, name='dashboard'),
+    re_path(r'^dashboard$', views.dashboard),
+    path('profile/<str:username>/', views.profile_detail, name='profile_detail'),
+    path('create-profile/', views.create_profile, name='create_profile'),
+    path('create-profile/step1/', views.create_profile_step1, name='create_profile_step1'),
+    path('create-profile/step2/', views.create_profile_step2, name='create_profile_step2'),
+    path('create-profile/step3/', views.create_profile_step3, name='create_profile_step3'),
+    path('create-profile/step4/', views.create_profile_step4, name='create_profile_step4'),
 ]
