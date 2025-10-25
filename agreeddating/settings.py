@@ -25,7 +25,7 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 SECRET_KEY = 'django-insecure-your-secret-key-here'
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+DEBUG = False  # CHANGED: Force False for production
 
 ALLOWED_HOSTS = []
 
@@ -144,8 +144,8 @@ DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 # Use environment variable for secret key in production
 SECRET_KEY = os.environ.get('SECRET_KEY', SECRET_KEY)
 
-# Debug mode from environment variable - FIXED: Better environment detection
-DEBUG = os.environ.get('DEBUG', 'False').lower() == 'true'
+# Debug mode from environment variable - FIXED: Force False for production
+DEBUG = False  # CHANGED: Force production mode
 
 # Allowed hosts for production - CRITICAL FIX: Added custom domain
 production_hosts = [
@@ -207,20 +207,3 @@ try:
     from .local_settings import *
 except ImportError:
     pass
-
-# =============================================================================
-# EMERGENCY FIX - FORCE CUSTOM DOMAIN
-# =============================================================================
-
-# FORCE allowed hosts for production
-ALLOWED_HOSTS = [
-    'agreeddating.com',
-    'www.agreeddating.com', 
-    '.railway.app',
-    '127.0.0.1', 
-    'localhost'
-]
-
-# FORCE production settings
-DEBUG = False
-SECURE_SSL_REDIRECT = True
