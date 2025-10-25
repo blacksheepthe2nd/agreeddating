@@ -510,7 +510,7 @@
 
   <header class="premium-header">
     <div class="nav-container">
-      <a href="/" class="logo-premium" aria-label="AgreedDating Homepage">
+      <a href="{% url 'index' %}" class="logo-premium" aria-label="AgreedDating Homepage">
         <div class="logo-icon">AD</div>
         AgreedDating
       </a>
@@ -530,14 +530,14 @@
       </nav>
       
       <div class="auth-buttons">
-        <a href="/login" class="btn btn-login">Sign In</a>
-        <a href="/join" class="btn btn-join">Join Elite</a>
+        <a href="{% url 'login' %}" class="btn btn-login">Sign In</a>
+        <a href="{% url 'join' %}" class="btn btn-join">Join Elite</a>
       </div>
     </div>
 
     <div class="mobile-cta-container">
-      <a href="/login" class="btn btn-login">Sign In</a>
-      <a href="/join" class="btn btn-join">Join Elite</a>
+      <a href="{% url 'login' %}" class="btn btn-login">Sign In</a>
+      <a href="{% url 'join' %}" class="btn btn-join">Join Elite</a>
     </div>
 
     <nav class="mobile-nav-links">
@@ -554,7 +554,8 @@
         <div class="join-card">
             <h2 class="section-title">Begin Your <span class="gold-accent">Application</span></h2>
             <p>Your journey to an elite connection starts here. Absolute discretion is guaranteed.</p>
-            <form action="/apply" method="POST">
+            <form action="{% url 'join' %}" method="POST">
+                {% csrf_token %}
                 <input type="text" placeholder="Full Name" required />
                 <input type="email" placeholder="Email Address" required />
                 <input type="password" placeholder="Create Password" required />
@@ -570,7 +571,7 @@
                 <button type="submit" class="btn btn-join" style="width: 100%; padding: 16px 0;">Submit Application</button>
             </form>
             <p style="color: var(--text-muted); font-size: 0.95rem; margin-top: 1.5rem;">
-                Already have an account? <a href="/login" class="nav-link" style="color: var(--brand-nav-link); display: inline;">Sign In</a>
+                Already have an account? <a href="{% url 'login' %}" class="nav-link" style="color: var(--brand-nav-link); display: inline;">Sign In</a>
             </p>
         </div>
     </section>

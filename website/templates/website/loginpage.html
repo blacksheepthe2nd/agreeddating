@@ -510,7 +510,7 @@
 
   <header class="premium-header">
     <div class="nav-container">
-      <a href="/" class="logo-premium" aria-label="AgreedDating Homepage">
+      <a href="{% url 'index' %}" class="logo-premium" aria-label="AgreedDating Homepage">
         <div class="logo-icon">AD</div>
         AgreedDating
       </a>
@@ -530,14 +530,14 @@
       </nav>
       
       <div class="auth-buttons">
-        <a href="/login" class="btn btn-login">Sign In</a>
-        <a href="/join" class="btn btn-join">Join Elite</a>
+        <a href="{% url 'login' %}" class="btn btn-login">Sign In</a>
+        <a href="{% url 'join' %}" class="btn btn-join">Join Elite</a>
       </div>
     </div>
 
     <div class="mobile-cta-container">
-      <a href="/login" class="btn btn-login">Sign In</a>
-      <a href="/join" class="btn btn-join">Join Elite</a>
+      <a href="{% url 'login' %}" class="btn btn-login">Sign In</a>
+      <a href="{% url 'join' %}" class="btn btn-join">Join Elite</a>
     </div>
 
     <nav class="mobile-nav-links">
@@ -553,14 +553,15 @@
     <section class="inner-page-content animate-in">
         <div class="login-card">
             <h2 class="section-title">Welcome <span class="gold-accent">Back</span></h2>
-            <form action="/dashboard" method="POST">
+            <form action="{% url 'login' %}" method="POST">
+                {% csrf_token %}
                 <input type="email" placeholder="Email Address" required />
                 <input type="password" placeholder="Password" required />
                 <a href="/forgot-password" class="forgot-link">Forgot Password?</a>
                 <button type="submit" class="btn btn-join" style="width: 100%; padding: 16px 0;">Sign In Securely</button>
             </form>
             <p style="text-align: center; color: var(--text-muted); font-size: 0.95rem; margin-top: 1.5rem;">
-                Not yet a member? <a href="/join" class="nav-link" style="color: var(--brand-nav-link); display: inline;">Join Elite</a>
+                Not yet a member? <a href="{% url 'join' %}" class="nav-link" style="color: var(--brand-nav-link); display: inline;">Join Elite</a>
             </p>
         </div>
     </section>
