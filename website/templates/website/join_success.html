@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Welcome to AgreedDating!</title>
+    <meta http-equiv="refresh" content="2;url={% url 'create_profile_step1' %}">
+    <style>
+        body {
+            background: #000;
+            color: #ffd700;
+            font-family: Arial, sans-serif;
+            text-align: center;
+            padding: 50px;
+        }
+        .success-message {
+            background: rgba(255, 215, 0, 0.1);
+            padding: 30px;
+            border-radius: 10px;
+            border: 1px solid #ffd700;
+        }
+        .loading {
+            margin: 20px 0;
+        }
+    </style>
+</head>
+<body>
+    <div class="success-message">
+        <h1>🎉 Welcome to AgreedDating!</h1>
+        <p>Your account has been created successfully.</p>
+        <p>Redirecting to profile creation...</p>
+        <div class="loading">⏳</div>
+        <p><a href="{% url 'create_profile_step1' %}" style="color: #ffd700;">Click here if not redirected</a></p>
+    </div>
+</body>
+</html>

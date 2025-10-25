@@ -25,5 +25,6 @@ urlpatterns = [
     path('create-profile/step2/', views.create_profile_step2, name='create_profile_step2'),
     path('create-profile/step3/', views.create_profile_step3, name='create_profile_step3'),
     path('create-profile/step4/', views.create_profile_step4, name='create_profile_step4'),
+    path('join-success/', views.join_success, name='join_success'),
     path('profile/<str:username>/', views.profile_detail, name='profile_detail'),
 ]

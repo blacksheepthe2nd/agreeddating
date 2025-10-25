@@ -92,14 +92,22 @@ def create_profile_step3(request):
 
 def create_profile_step4(request):
     if request.method == 'POST':
-        # Process step 3 data and move to step 4
-        messages.success(request, 'Preferences saved! Final step.')
-        return render(request, 'website/createprofile4.html')
-    return redirect('create_profile_step1')
+        # Process step 3 data and redirect to success page
+        messages.success(request, 'Profile completed successfully! Welcome to AgreedDating.')
+        return redirect('join_success')
+    
+    # GET request - show the form
+    messages.success(request, 'Preferences saved! Final step.')
+    return render(request, 'website/createprofile4.html')
 
 def create_profile(request):
     # Main profile creation entry point
     return redirect('create_profile_step1')
+
+def join_success(request):
+    # Show success page after profile completion
+    messages.success(request, 'Welcome to AgreedDating! Your profile is now complete and active.')
+    return render(request, 'website/join_success.html')
 
 def profile_detail(request, username):
     # Profile detail view - for now just show a basic page
