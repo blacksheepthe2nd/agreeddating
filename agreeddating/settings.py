@@ -25,9 +25,9 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 SECRET_KEY = 'django-insecure-your-secret-key-here'
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+DEBUG = True  # TRUE FOR LOCAL DEVELOPMENT
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ['127.0.0.1', 'localhost', '0.0.0.0']  # LOCAL HOSTS ONLY
 
 
 # Application definition
@@ -138,112 +138,17 @@ STATICFILES_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage'
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
 # =============================================================================
-# PRODUCTION SETTINGS FOR RAILWAY
+# LOCAL DEVELOPMENT SECURITY SETTINGS
 # =============================================================================
 
-# Use environment variable for secret key in production
-SECRET_KEY = os.environ.get('SECRET_KEY', SECRET_KEY)
+# DISABLE all production security for local development
+SECURE_SSL_REDIRECT = False
+SESSION_COOKIE_SECURE = False
+CSRF_COOKIE_SECURE = False
+SECURE_HSTS_SECONDS = 0
+SECURE_BROWSER_XSS_FILTER = False
+SECURE_CONTENT_TYPE_NOSNIFF = False
 
-# Debug mode from environment variable
-DEBUG = os.environ.get('DEBUG', 'False').lower() == 'true'
-
-# Allowed hosts for production
-production_hosts = [
-    'agreeddating.com',
-    'www.agreeddating.com', 
-    '.railway.app',
-    '.onrender.com'
-]
-ALLOWED_HOSTS = os.environ.get('ALLOWED_HOSTS', '').split(',') if os.environ.get('ALLOWED_HOSTS') else production_hosts
-
-# Database configuration for Railway - overrides SQLite in production
-if 'DATABASE_URL' in os.environ:
-    DATABASES['default'] = dj_database_url.config(
-        default=os.environ.get('DATABASE_URL'),
-        conn_max_age=600,
-        ssl_require=True
-    )
-
-# Security settings for production ONLY
-# Check if we're in production by looking for Railway environment variables
-IS_RAILWAY = 'RAILWAY_STATIC_URL' in os.environ or 'RAILWAY_ENVIRONMENT' in os.environ
-IS_PRODUCTION = not DEBUG or IS_RAILWAY
-
-if IS_PRODUCTION:
-    # SSL/HTTPS settings - ONLY in production
-    SECURE_SSL_REDIRECT = True
-    SESSION_COOKIE_SECURE = True
-    CSRF_COOKIE_SECURE = True
-    SECURE_BROWSER_XSS_FILTER = True
-    SECURE_CONTENT_TYPE_NOSNIFF = True
-    SECURE_HSTS_SECONDS = 31536000  # 1 year
-    SECURE_HSTS_INCLUDE_SUBDOMAINS = True
-    SECURE_HSTS_PRELOAD = True
-    
-    # Additional security settings
-    SECURE_PROXY_SSL_HEADER = ('HTTP_X_FORWARDED_PROTO', 'https')
-    
-    # Development hosts for local testing
-    DEVELOPMENT_HOSTS = ['127.0.0.1', 'localhost', '0.0.0.0']
-    # Add development hosts if not already present
-    for host in DEVELOPMENT_HOSTS:
-        if host not in ALLOWED_HOSTS:
-            ALLOWED_HOSTS.append(host)
-else:
-    # Development settings - allow HTTP
-    SECURE_SSL_REDIRECT = False
-    SESSION_COOKIE_SECURE = False
-    CSRF_COOKIE_SECURE = False
-    SECURE_HSTS_SECONDS = 0
-    # Development hosts
-    ALLOWED_HOSTS = ['127.0.0.1', 'localhost', '0.0.0.0']
-
-# =============================================================================
-# DEBUG ENVIRONMENT
-# =============================================================================
-
-print("🔍 ENVIRONMENT DEBUG INFO:")
+print("🔧 LOCAL DEVELOPMENT SETTINGS LOADED")
 print(f"DEBUG = {DEBUG}")
 print(f"ALLOWED_HOSTS = {ALLOWED_HOSTS}")
-print(f"RAILWAY_STATIC_URL = {os.environ.get('RAILWAY_STATIC_URL', 'NOT SET')}")
-print(f"RAILWAY_ENVIRONMENT = {os.environ.get('RAILWAY_ENVIRONMENT', 'NOT SET')}")
-print(f"DATABASE_URL = {'SET' if 'DATABASE_URL' in os.environ else 'NOT SET'}")
-
-# =============================================================================
-# RAILWAY PRODUCTION OVERRIDE - FORCE SETTINGS
-# =============================================================================
-
-# FORCE production settings regardless of environment
-print("🚨 APPLYING FORCED PRODUCTION SETTINGS")
-
-# Force ALLOWED_HOSTS - this is critical!
-ALLOWED_HOSTS = [
-    'agreeddating.com',
-    'www.agreeddating.com', 
-    '.railway.app',
-    '.onrender.com',
-    '127.0.0.1', 
-    'localhost',
-    '0.0.0.0'
-]
-
-# Force production mode
-DEBUG = False
-
-# Force security settings
-SECURE_SSL_REDIRECT = True
-SESSION_COOKIE_SECURE = True
-CSRF_COOKIE_SECURE = True
-SECURE_HSTS_SECONDS = 31536000
-
-print(f"✅ FORCED SETTINGS APPLIED: ALLOWED_HOSTS = {ALLOWED_HOSTS}")
-
-# =============================================================================
-# LOCAL DEVELOPMENT OVERRIDES
-# =============================================================================
-
-# Local development settings file (create this file for local overrides)
-try:
-    from .local_settings import *
-except ImportError:
-    pass
